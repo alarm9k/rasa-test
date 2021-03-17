@@ -270,11 +270,11 @@ class EntityHighlighter extends React.Component<Props, State> {
     }
 
     getRanges(bounds: number[], accumulator: Range[] = []): Range[] {
-        if (bounds.length === 2) {
-            return [...accumulator, new Range(bounds[0], bounds[1])].filter((range) => range.end > range.start);
-        }
+        const updatedAccumulator = [...accumulator, new Range(bounds[0], bounds[1])];
 
-        return this.getRanges(bounds.slice(1), [...accumulator, new Range(bounds[0], bounds[1])]);
+        return bounds.length === 2
+            ? updatedAccumulator.filter((range) => range.end > range.start)
+            : this.getRanges(bounds.slice(1), updatedAccumulator);
     }
 
     // This can be optimized to avoid going through all (sorted) entities each time.
